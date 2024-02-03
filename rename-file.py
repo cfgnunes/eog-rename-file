@@ -21,7 +21,6 @@ from __future__ import print_function
 
 import os
 import logging
-import bisect
 
 from gi.repository import Eog
 from gi.repository import GObject
