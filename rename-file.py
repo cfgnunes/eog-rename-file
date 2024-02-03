@@ -1,6 +1,6 @@
 # Rename file plugin for Eye of GNOME
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2022 Jan Schlüter
+# Copyright (C) 2022 Jan Schluter
 # Based on eogtricks-bracket-tags by Andrew Chadwick
 #
 # This program is free software; you can redistribute it and/or
@@ -74,7 +74,7 @@ def show_rename_dialog(window, old_name, new_name=None):
     basename, ext = os.path.splitext(new_name)
     GLib.idle_add(entry.select_region, 0, len(basename))
 
-    label = Gtk.Label("Rename “%s” to:" % old_name)
+    label = Gtk.Label("Rename '%s' to:" % old_name)
     label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
 
     dialog.vbox.pack_start(label, 1, 1, 4)
@@ -165,7 +165,7 @@ class FileRenamer(GObject.GObject, Eog.WindowActivatable):
             new_name = show_rename_dialog(self.window, old_name, new_name)
             if new_name is not None and new_name != old_name:
                 # Rename the image by setting its GFile's display name.
-                logger.debug("Rename '%s' → '%s'", old_name, new_name)
+                logger.debug("Rename '%s' to '%s'", old_name, new_name)
                 store = self.window.get_store()
                 old_pos = store.get_pos_by_image(img)
                 try:
@@ -194,7 +194,7 @@ class FileRenamer(GObject.GObject, Eog.WindowActivatable):
             pos = bisect.bisect_left(range(store.length()), new_name, lo=pos, key=get_filename)
         elif name > new_name:
             pos = bisect.bisect_left(range(pos), new_name, key=get_filename)
-        
+
         view.set_current_image(store.get_image_by_pos(pos), True)
         return False
 
