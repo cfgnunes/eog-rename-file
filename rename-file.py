@@ -99,8 +99,8 @@ def show_retry_dialog(window, error):
         window,
         flags,
         buttons=[
-            "Abort", Gtk.ResponseType.REJECT,
-            "Enter new name", Gtk.ResponseType.ACCEPT,
+            "Cancel", Gtk.ResponseType.REJECT,
+            "Enter a new name", Gtk.ResponseType.ACCEPT,
         ],
     )
     dialog.set_position(Gtk.WindowPosition.MOUSE)
