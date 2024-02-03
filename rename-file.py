@@ -166,37 +166,13 @@ class FileRenamer(GObject.GObject, Eog.WindowActivatable):
             if new_name is not None and new_name != old_name:
                 # Rename the image by setting its GFile's display name.
                 logger.debug("Rename '%s' to '%s'", old_name, new_name)
-                store = self.window.get_store()
-                old_pos = store.get_pos_by_image(img)
                 try:
                     img.get_file().set_display_name(new_name)
                 except GLib.GError as exc:
                     logger.debug(exc.args[0])
                     if show_retry_dialog(self.window, exc.args[0]):
                         continue
-                else:
-                    # Find and jump to the renamed image.
-                    GLib.idle_add(self._set_current_idle_cb, old_pos, new_name)
             break
-
-    def _set_current_idle_cb(self, pos, new_name):
-        # Jump to the new location of the renamed image. There is no API for
-        # that, so we use binary search to find it in the alphabetic store.
-        view = self.window.get_thumb_view()
-        store = self.window.get_store()
-
-        def get_filename(i):
-            return get_image_filename(store.get_image_by_pos(i))
-
-        # It is not unlikely the file is at the same position, so we start there:
-        name = get_filename(pos)
-        if name < new_name:
-            pos = bisect.bisect_left(range(store.length()), new_name, lo=pos, key=get_filename)
-        elif name > new_name:
-            pos = bisect.bisect_left(range(pos), new_name, key=get_filename)
-
-        view.set_current_image(store.get_image_by_pos(pos), True)
-        return False
 
     def _print_accels(self):
         app = self.window.get_application()
